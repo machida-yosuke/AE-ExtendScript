@@ -1,4 +1,4 @@
-import * as json from "./10000.json"
+import * as json from "./1000000.json"
 
 const COMP_PROP = {
   'compWidth': 1920,
@@ -16,9 +16,9 @@ const TEXT_PROP = {
 };
 
 // ここらへんはよくわからん
-const offset = 17;
+const offset = 33;
 
-const count = 100;
+const count = 10000;
 let name_array = [];
 let createCount = 0;
 
@@ -28,7 +28,6 @@ json["name_all"].forEach((item, index) =>{
   } else {
     name_array.push(json["name_all"][index]["name"])
   }
-
   if (index % count == 0 && index != 0) {
     createCount += 1;
     const compName = "staffroll" + createCount;
@@ -51,12 +50,12 @@ json["name_all"].forEach((item, index) =>{
     textLayer_TextDocument.fontSize = TEXT_PROP.size;
     textLayer_TextProp.setValue(textLayer_TextDocument);
 
-    const y =textLayer.sourceRectAtTime(0, false).height;
+    const y = textLayer.sourceRectAtTime(0, false).height - offset;
     textLayer('position').setValue([COMP_PROP.compWidth / 2, COMP_PROP.compHeight / 2]);
     textLayer('anchorPoint').setValue([0, y / 2]);
 
-    textLayer('position').setValueAtTime(0, [COMP_PROP.compWidth / 2, COMP_PROP.compHeight + y / 2 + offset ])
-    textLayer('position').setValueAtTime(COMP_PROP.compTime, [COMP_PROP.compWidth / 2, -y / 2 + offset])
+    textLayer('position').setValueAtTime(0, [COMP_PROP.compWidth / 2, COMP_PROP.compHeight + y / 2 + offset / 2])
+    textLayer('position').setValueAtTime(COMP_PROP.compTime - 0.0165, [COMP_PROP.compWidth / 2, -y / 2 - offset / 2])
     app.project.renderQueue.items.add(comp)
     name_array = []
   }

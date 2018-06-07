@@ -4,6 +4,7 @@ const browserify   = require('browserify');
 const source       = require('vinyl-source-stream');
 const rimraf       = require('rimraf');
 const sequence     = require('run-sequence');
+const jsxbin       = require( 'jsxbin' )
 
 const BUNDLENAME = 'bundle.jsx';
 const DIST = './dist/';
