@@ -1,64 +1,48 @@
-import * as json from "./1000000.json"
+import * as json from "./1000.json"
 
-const COMP_PROP = {
-  'compWidth': 1920,
-  'compHeight': 1080,
-  'pixelAspect': 1.0,
-  'compFps': 60,
-  'compTime': 10 //秒
-};
+preferences.rulerUnits = Units.PIXELS;
+doc = documents.add(1280, 720);
 
-const TEXT_PROP = {
-  'font': "Osaka",
-  'size': 20,
-  'lineHeight': 80,
-  'color': [1, 1, 1]
-};
 
-// ここらへんはよくわからん
-const offset = 33;
+layers = doc.artLayers;
+layer1 = layers.add();
+layer1.kind = LayerKind.TEXT;
+layer1.textItem.contents = "テキストファイルから読み込んだ文字列";
 
-const count = 10000;
-let name_array = [];
-let createCount = 0;
+layer1.textItem.size = 40;
+layer1.textItem.font = "Osaka";
+layer1.textItem.justification = Justification.CENTER;
+layer1.textItem.color.rgb.red = 255;
+layer1.textItem.color.rgb.green = 255;
+layer1.textItem.color.rgb.blue = 255;
+layer1.textItem.horizontalScale = 90;
 
-json["name_all"].forEach((item, index) =>{
-  if (index % 10 == 0 && index != 0) {
-    name_array.push(json["name_all"][index]["name"] + "\n")
-  } else {
-    name_array.push(json["name_all"][index]["name"])
-  }
-  if (index % count == 0 && index != 0) {
-    createCount += 1;
-    const compName = "staffroll" + createCount;
-    const comp = app.project.items.addComp(
-      compName,
-      COMP_PROP.compWidth,
-      COMP_PROP.compHeight,
-      COMP_PROP.pixelAspect,
-      COMP_PROP.compTime,
-      COMP_PROP.compFps
-    );
 
-    const textLayer = comp.layers.addText(name_array.join("  "));
-    var textLayer_TextProp = textLayer.property("Source Text");
-    var textLayer_TextDocument = textLayer_TextProp.value;
-    textLayer_TextDocument.resetCharStyle();
-    textLayer_TextDocument.fillColor = TEXT_PROP.color;
-    textLayer_TextDocument.font = TEXT_PROP.font;
-    textLayer_TextDocument.leading = TEXT_PROP.lineHeight;
-    textLayer_TextDocument.fontSize = TEXT_PROP.size;
-    textLayer_TextProp.setValue(textLayer_TextDocument);
+function translateLayerInCenter () {
+	var targetLayer = layer1;
+	var targetLayerBounds = targetLayer.bounds;
+	var targetLayerX = parseInt(targetLayerBounds[0]);
+	var targetLayerY = parseInt(targetLayerBounds[1]);
+	var targetLayerWidth = Math.abs( parseInt(targetLayerBounds[0]) - parseInt(targetLayerBounds[2]) );
+	var targetLayerHeight = Math.abs( parseInt(targetLayerBounds[1]) - parseInt(targetLayerBounds[3]) );
+	var canvasWidth = activeDocument.width;
+	var canvasHeight = activeDocument.height;
+	var distanceX = ( canvasWidth - targetLayerWidth ) / 2;
+	var distanceY = ( canvasHeight - targetLayerHeight ) / 2;
+	targetLayer.translate( targetLayerX * -1, targetLayerY * -1 );
+	targetLayer.translate( distanceX, distanceY );
+}
 
-    const y = textLayer.sourceRectAtTime(0, false).height - offset;
-    textLayer('position').setValue([COMP_PROP.compWidth / 2, COMP_PROP.compHeight / 2]);
-    textLayer('anchorPoint').setValue([0, y / 2]);
+translateLayerInCenter();
 
-    textLayer('position').setValueAtTime(0, [COMP_PROP.compWidth / 2, COMP_PROP.compHeight + y / 2 + offset / 2])
-    textLayer('position').setValueAtTime(COMP_PROP.compTime - 0.0165, [COMP_PROP.compWidth / 2, -y / 2 - offset / 2])
-    app.project.renderQueue.items.add(comp)
-    name_array = []
-  }
-})
+docObj = activeDocument;
+docObj.activeLayer = docObj.layers["背景"];
+docObj.activeLayer.remove();
 
-alert('owari');
+// fileObj = new File("~/Desktop/test.png");
+// pngOpt = new PNGSaveOptions();
+// pngOpt.interlaced = false;
+// activeDocument.saveAs(fileObj, pngOpt, true, Extension.LOWERCASE);
+// activeDocument.close(SaveOptions.DONOTSAVECHANGES);
+
+alert("owari");
