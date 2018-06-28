@@ -1,9 +1,16 @@
-import * as json from "./10000.json"
+// import * as json from "./10000.json"
+import * as json from "./15890.json"
 // 秒
-const timelineSecond = 13560
+// const timelineSecond = 13560
+const timelineSecond = 219
+
 // １コンポ何人の名前を入れるか
-const maxName = 10000000
-const putName = 10000;
+// const maxName = 10000000
+// const putName = 10000;
+
+const maxName = 15890
+const putName = 15890;
+
 const createCompNum = maxName / putName
 
 const COMP_PROP = {
@@ -66,20 +73,21 @@ json["name_all"].forEach((item, index) =>{
 
     const y = textLayer.sourceRectAtTime(0, false).height - offset;
 
-    const kyori = y + COMP_PROP.compHeight + TEXT_PROP.lineHeight - TEXT_PROP.size
-    const zikan = COMP_PROP.compTime *  COMP_PROP.compFps
-    const hayasa = kyori / zikan
-    const diff = COMP_PROP.compHeight / hayasa
-    const diffToSecond = diff / 60
+    // const kyori = y + COMP_PROP.compHeight + TEXT_PROP.lineHeight - TEXT_PROP.size
+    // const zikan = COMP_PROP.compTime *  COMP_PROP.compFps
+    // const hayasa = kyori / zikan
+    // const diff = COMP_PROP.compHeight / hayasa
+    // const diffToSecond = diff / 60
 
-    comp.duration = COMP_PROP.compTime + diffToSecond
-    textLayer.outPoint = comp.duration
+    // comp.duration = COMP_PROP.compTime + diffToSecond
+    // textLayer.outPoint = comp.duration
 
     textLayer('position').setValue([COMP_PROP.compWidth / 2, COMP_PROP.compHeight / 2]);
     textLayer('anchorPoint').setValue([0, y / 2]);
 
     textLayer('position').setValueAtTime(0, [COMP_PROP.compWidth / 2, COMP_PROP.compHeight + y / 2 + offset / 2])
-    textLayer('position').setValueAtTime(COMP_PROP.compTime + diffToSecond - oneFrame, [COMP_PROP.compWidth / 2, -y / 2 - offset / 2])
+    textLayer('position').setValueAtTime(COMP_PROP.compTime, [COMP_PROP.compWidth / 2, -y / 2 - offset / 2])
+    // textLayer('position').setValueAtTime(COMP_PROP.compTime + diffToSecond - oneFrame, [COMP_PROP.compWidth / 2, -y / 2 - offset / 2])
     app.project.renderQueue.items.add(comp)
     name_array = []
   }
